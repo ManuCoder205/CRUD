@@ -1,0 +1,34 @@
+name: CI Pipeline  # Yeh workflow ka naam hai
+
+on:
+  push:
+    branches: [ main ]  # Har main branch push pe trigger hoga
+  pull_request:
+    branches: [ main ]  # PR banane pe bhi run hoga
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Free runner (GitHub ka server)
+
+    strategy:
+      matrix:
+        node-version: [18.x]  # Node.js version – React ke liye 18 best
+
+    steps:
+    - uses: actions/checkout@v4  # Code repo se pull karega
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'  # Speed up ke liye cache
+
+    - name: Install dependencies
+      run: npm ci  # Faster install (ci for CI/CD)
+
+    - name: Build
+      run: npm run build  # Tumhara React build script run hoga
+
+    # Optional: Lint check (agar package.json mein lint script hai)
+    - name: Lint
+      run: npm run lint || true  # Fail nahi hoga agar lint errors
