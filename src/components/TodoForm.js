@@ -20,7 +20,7 @@ const TodoForm = () => {
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter todo..."
       />
-      <button type="submit">Add</button>
+      <button type="submit">Add number</button>
     </form>
   );
 };
